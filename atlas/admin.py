@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from atlas.models import Type, City, Country, Status, Use, Owner, Ship
 
 class TypeAdmin(admin.ModelAdmin):

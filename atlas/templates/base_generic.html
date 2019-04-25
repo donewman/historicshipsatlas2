@@ -14,6 +14,16 @@
   <div class="off-canvas position-left" id="nav-offcanvas" data-off-canvas>
     <ul class="vertical menu">
       <li><a href="{% url 'index' %}">Home</a></li>
+      <li>
+        <form action="/atlas/search/" method="get">
+          <div class="input-group">
+            {{ basic_search_form.keywords }}
+            <div class="input-group-button">
+              <input type="submit" class="button" value="Search">
+            </div>
+          </div>
+        </form>
+      </li>
     </ul>
   </div>
   <div class="off-canvas-content" data-off-canvas-content>
@@ -31,6 +41,16 @@
             <li><a href="{% url 'index' %}">Home</a></li>
           </ul>
         </div>
+        <form class="top-bar-right" action="/atlas/search/" method="get">
+          <ul class="menu input-group">
+            <li>{{ basic_search_form.keywords }}</li>
+            <li>
+              <div class="input-group-button">
+                <input type="submit" class="button" value="Search">
+              </div>
+            </li>
+          </ul>
+        </form>
       </div>
       {% block content %}<!-- page content -->{% endblock %}
     </div>

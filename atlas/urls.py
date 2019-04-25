@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('ship/<slug:slug>/', views.ShipDetailView.as_view(), name='ship_detail'),
     path('ships/', views.ShipListView.as_view(), name='ships'),
+    path('search/', views.SearchView.as_view(), name='search'),
     path('type/<slug:slug>/', views.TypeDetailView.as_view(), name='type_detail'),
     path('city/<slug:slug>/', views.CityDetailView.as_view(), name='city_detail'),
     path('country/<slug:slug>/', views.CountryDetailView.as_view(), name='country_detail'),
