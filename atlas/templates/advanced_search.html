@@ -1,0 +1,82 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h2>Advanced Search</h2>
+<form action="/atlas/search/" method="get" class="grid-x grid-padding-x">
+  <div class="cell">
+    {{ search_form.keywords.label_tag }}
+    {{ search_form.keywords }}
+  </div>
+  <div class="cell">
+    {{ search_form.name.label_tag }}
+    {{ search_form.name }}
+  </div>
+  <div class="cell">
+    {{ search_form.imo.label_tag }}
+    {{ search_form.imo }}
+  </div>
+  <div class="cell">
+    {{ search_form.type.label_tag }}
+    {{ search_form.type }}
+  </div>
+  <div class="medium-6 cell">
+    {{ search_form.year_built_from.label_tag }}
+    {{ search_form.year_built_from }}
+  </div>
+  <div class="medium-6 cell">
+    {{ search_form.year_built_to.label_tag }}
+    {{ search_form.year_built_to }}
+  </div>
+  <div class="medium-6 cell">
+    {{ search_form.tonnage_from.label_tag }}
+    {{ search_form.tonnage_from }}
+  </div>
+  <div class="medium-6 cell">
+    {{ search_form.tonnage_to.label_tag }}
+    {{ search_form.tonnage_to }}
+  </div>
+  <div class="medium-6 cell">
+    {{ search_form.length_from.label_tag }}
+    {{ search_form.length_from }}
+  </div>
+  <div class="medium-6 cell">
+    {{ search_form.length_to.label_tag }}
+    {{ search_form.length_to }}
+  </div>
+  <div class="medium-6 cell">
+    {{ search_form.beam_from.label_tag }}
+    {{ search_form.beam_from }}
+  </div>
+  <div class="medium-6 cell">
+    {{ search_form.beam_to.label_tag }}
+    {{ search_form.beam_to }}
+  </div>
+  <div class="cell">
+    {{ search_form.city.label_tag }}
+    {{ search_form.city }}
+  </div>
+  <div class="cell">
+    {{ search_form.country.label_tag }}
+    {{ search_form.country }}
+  </div>
+  <div class="cell">
+    {{ search_form.status.label_tag }}
+    {{ search_form.status }}
+  </div>
+  <div class="cell">
+    {{ search_form.use.label_tag }}
+    {{ search_form.use }}
+  </div>
+  <div class="cell">
+    {{ search_form.owner.label_tag }}
+    {{ search_form.owner }}
+  </div>
+  <div class="cell">
+    {{ search_form.former_names.label_tag }}
+    {{ search_form.former_names }}
+  </div>
+  <div class="cell">
+    <input type="submit" class="button" value="Search">
+  </div>
+</form>
+{% endblock %}

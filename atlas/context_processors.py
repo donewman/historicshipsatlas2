@@ -1,4 +1,4 @@
-from atlas.forms import BasicSearchForm
+from atlas.forms import SearchForm
 
-def basic_search_form(request):
-    return {'basic_search_form' : BasicSearchForm()}
+def search_form(request):
+    return {'search_form' : SearchForm()}

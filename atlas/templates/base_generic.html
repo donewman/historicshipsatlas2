@@ -14,10 +14,11 @@
   <div class="off-canvas position-left" id="nav-offcanvas" data-off-canvas>
     <ul class="vertical menu">
       <li><a href="{% url 'index' %}">Home</a></li>
+      <li><a href="{% url 'advanced_search' %}">Advanced Search</a></li>
       <li>
         <form action="/atlas/search/" method="get">
           <div class="input-group">
-            {{ basic_search_form.keywords }}
+            {{ search_form.keywords }}
             <div class="input-group-button">
               <input type="submit" class="button" value="Search">
             </div>
@@ -39,11 +40,12 @@
           <ul class="menu">
             <li class="menu-text">Historic Ships Atlas</li>
             <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'advanced_search' %}">Advanced Search</a></li>
           </ul>
         </div>
         <form class="top-bar-right" action="/atlas/search/" method="get">
           <ul class="menu input-group">
-            <li>{{ basic_search_form.keywords }}</li>
+            <li>{{ search_form.keywords }}</li>
             <li>
               <div class="input-group-button">
                 <input type="submit" class="button" value="Search">

@@ -65,7 +65,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'atlas.context_processors.basic_search_form',
+                'atlas.context_processors.search_form',
             ],
         },
     },

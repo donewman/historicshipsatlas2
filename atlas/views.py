@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, FormView, ListView
 from django.views.generic.base import RedirectView
 from django.core import serializers
 from django.contrib.postgres.search import SearchVector
 from atlas.models import Ship, Type, City, Country, Status, Use, Owner
-from atlas.forms import BasicSearchForm
+from atlas.forms import SearchForm
 
 # Index view
 def index(request):
@@ -17,13 +17,17 @@ def index(request):
 
     return render(request, 'index.html', context,)
 
-# List of all ships
-class ShipListView(ListView):
+# Advanced search form
+class AdvancedSearchView(FormView):
+    template_name = 'advanced_search.html'
+    form_class = SearchForm
+    success_url = '/atlas/search/'
+
+# Search results
+class SearchResultsView(ListView):
+    template_name = 'search_results.html'
     model = Ship
 
-# Basic search form
-class SearchView(ListView):
-    model = Ship
     def get_queryset(self):
         try:
             search_string = self.request.GET["keywords"]
