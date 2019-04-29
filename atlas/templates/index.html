@@ -45,11 +45,12 @@
             'type': 'geojson',
             'data': {
                 'type': 'FeatureCollection',
-                'features': static_ships_features
+                'features': static_ships_features,
             }
         },
         'layout': {
             'icon-image': '{icon}-15',
+            'icon-allow-overlap': true,
         },
     });
     map.on('click', 'static_ships', function (e) {
@@ -85,6 +86,8 @@
     console.log({{ active_ships_json|safe }});
     var active_ships_features = [];
     for (var i = 0; i < ais.vessels.length; i++) {
+      urlname = ais.vessels[i].name.replace(/\s+/g, '-').toLowerCase();
+      slug = urlname + '-' + ais.vessels[i].datasheet.year_built;
       active_ships_features.push({
         'type': 'Feature',
         'geometry': {
@@ -92,8 +95,8 @@
             'coordinates': [ais.vessels[i].position.longitude, ais.vessels[i].position.latitude]
         },
         'properties': {
-            'description': '<h3>' + ais.vessels[i].name + ' (' + ais.vessels[i].datasheet.year_built + ')</h3></p><table><caption>AIS Data from <a href="http://www.fleetmon.com">FleetMon</a></caption><tr><th scope="row">Current Location:</th><td>' + ais.vessels[i].position.location_str + '</td></tr><tr><th scope="row">Navigational Status:</th><td>' + ais.vessels[i].position.nav_status + '</td></tr><tr><th scope="row">Speed:</th><td>' + ais.vessels[i].position.speed + ' kn</td></tr><tr><th scope="row">Last Updated:</th><td>' + ais.vessels[i].position.received + '</td></tr><tr><th scope="row">Destination:</th><td>' + ais.vessels[i].voyage.destination + '</table><p><a href="/atlas/ship/' + ais.vessels[i].vessel_id + '">Ship Details >>></a></p>',
-            'icon': 'triangle'
+            'description': '<h3>' + ais.vessels[i].name + ' (' + ais.vessels[i].datasheet.year_built + ')</h3></p><table><caption>AIS Data from <a href="http://www.fleetmon.com">FleetMon</a></caption><tr><th scope="row">Current Location:</th><td>' + ais.vessels[i].position.location_str + '</td></tr><tr><th scope="row">Navigational Status:</th><td>' + ais.vessels[i].position.nav_status + '</td></tr><tr><th scope="row">Speed:</th><td>' + ais.vessels[i].position.speed + ' kn</td></tr><tr><th scope="row">Last Updated:</th><td>' + ais.vessels[i].position.received + '</td></tr><tr><th scope="row">Destination:</th><td>' + ais.vessels[i].voyage.destination + '</table><p><a href="/atlas/ship/' + slug + '">Ship Details >>></a></p>',
+            'icon': 'ferry'
         }
       },
     );}
@@ -110,6 +113,7 @@
           },
           'layout': {
               'icon-image': '{icon}-15',
+              'icon-allow-overlap': true,
           },
       });
       map.on('click', 'active_ships', function (e) {
