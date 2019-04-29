@@ -69,7 +69,7 @@ class SearchResultsView(ListView):
             qs = qs.annotate(search=(SearchVector('owner__name')),).filter(search=self.request.GET['owner']).distinct('pk')
         if self.request.GET.get('former_names'):
             qs = qs.annotate(search=(SearchVector('former_names')),).filter(search=self.request.GET['former_names']).distinct('pk')
-        return qs
+        return qs.order_by('name')
 
 # Details view for ships
 class ShipDetailView(DetailView):
