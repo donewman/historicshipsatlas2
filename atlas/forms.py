@@ -18,6 +18,6 @@ class SearchForm(forms.Form):
     city = forms.CharField(label='Location - City:', max_length=200, required=False)
     country = forms.ModelMultipleChoiceField(label='Location - Country:', queryset=Country.objects.all(), required=False)
     status = forms.ModelMultipleChoiceField(label='Status:', queryset=Status.objects.all(), required=False)
-    use = forms.ModelMultipleChoiceField(label='Use(s):', queryset=Use.objects.all(), required=False)
+    uses = forms.ModelMultipleChoiceField(label='Use(s):', queryset=Use.objects.all(), required=False)
     owner = forms.CharField(label='Owner:', max_length=200, required=False)
     former_names = forms.CharField(label='Former Names:', max_length=200, required=False)

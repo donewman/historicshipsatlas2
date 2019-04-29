@@ -1,7 +1,9 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<h2>Advanced Search</h2>
+<h2>Search</h2>
+
+<h3>Advanced Search</h3>
 <form action="/atlas/search/" method="get" class="grid-x grid-padding-x">
   <div class="cell">
     {{ search_form.keywords.label_tag }}
@@ -64,8 +66,8 @@
     {{ search_form.status }}
   </div>
   <div class="cell">
-    {{ search_form.use.label_tag }}
-    {{ search_form.use }}
+    {{ search_form.uses.label_tag }}
+    {{ search_form.uses }}
   </div>
   <div class="cell">
     {{ search_form.owner.label_tag }}
