@@ -119,7 +119,6 @@ class Owner(models.Model):
 class Ship(models.Model):
 	name=models.CharField('Name', max_length=200)
 	imo=models.PositiveIntegerField('IMO Number', null=True, blank=True)
-	fleetmon=models.PositiveIntegerField('FleetMon ID', null=True, blank=True)
 	type=models.ForeignKey(Type, on_delete=models.SET_NULL, verbose_name='Type of Ship', null=True)
 	year_built=models.PositiveSmallIntegerField('Year Built')
 	tonnage=models.PositiveIntegerField('Gross Tonnage', null=True, blank=True)
@@ -135,7 +134,8 @@ class Ship(models.Model):
 	description=models.TextField('Description', blank=True)
 	lat=models.FloatField('Latitude', null=True, blank=True)
 	lon=models.FloatField('Longitude', null=True, blank=True)
-	slug=models.SlugField('Slug', max_length=205, null=True, db_index=True)
+	slug=models.SlugField('Slug', max_length=200, null=True, db_index=True)
+	active=models.BooleanField('Active')
 
 	def __str__(self):
 		return self.name

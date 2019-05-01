@@ -107,10 +107,9 @@
 
 {% block script %}
 <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js"></script>
-{% if ship.status|stringformat:"s" == "Active" and ship.fleetmon %}
+{% if ship.active is True and ship.imo %}
 <script type="text/javascript">
-  fetch('https://apiv2.fleetmon.com/myfleet/{{ ship.fleetmon }}?apikey=4320bb316a86f03cccb627ce0f031905664d902c', {
-    credentials: 'include',
+  fetch(' https://www.fleetmon.com/api/p/personal-v1/vessels_terrestrial/?username=dougnewman&api_key=4320bb316a86f03cccb627ce0f031905664d902c&imonumber={{ ship.imo }}&format=json', {
     headers: {
       'Accept': 'application/json'
     },
@@ -123,7 +122,7 @@
     mapboxgl.accessToken = 'pk.eyJ1IjoiZG91Z25ld21hbiIsImEiOiJjam5vODkwaHQwNm1qM3BxbHV6YmlidWFoIn0.3rN2nNWL5-Ie_euOFrChbg';
     var map = new mapboxgl.Map({
         container: 'map',
-        center: [ais.position.longitude, ais.position.latitude],
+        center: [ais.objects[0].longitude, ais.objects[0].latitude],
         zoom: 6,
         style: 'mapbox://styles/mapbox/satellite-streets-v10'
     });
@@ -141,10 +140,10 @@
                       'type': 'Feature',
                       'geometry': {
                           'type': 'Point',
-                          'coordinates': [ais.position.longitude, ais.position.latitude]
+                          'coordinates': [ais.objects[0].longitude, ais.objects[0].latitude]
                       },
                       'properties': {
-                          'title': ais.name,
+                          'title': ais.objects[0].name,
                           'icon': 'ferry'
                       }
                   }]
@@ -165,19 +164,19 @@
       });
       map.on('click', 'points', function (e) {
           var coordinates = e.features[0].geometry.coordinates.slice();
-          var description = '<p><strong>' +
-            ais.name +
-            '</strong></p><table><th scope="row">Current Location:</th><td>' +
-            ais.position.location_str +
+          var description = '<h3>' +
+            ais.objects[0].name +
+            '</h3><table><th scope="row">Current Location:</th><td>' +
+            ais.objects[0].location +
             '</td></tr><tr><th scope="row">Navigational Status:</th><td>' +
-            ais.position.nav_status +
+            ais.objects[0].navigationstatus +
             '</td></tr><tr><th scope="row">Speed:</th><td>' +
-            ais.position.speed +
+            ais.objects[0].speed +
             ' kn</td></tr><tr><th scope="row">Last Updated:</th><td>' +
-            ais.position.received +
-            '</td></tr><tr><th scope="row">Destination:</th><td>' +
-            ais.voyage.destination +
-            '</td></table><p>AIS data from <a href="https://www.fleetmon.com/">FleetMon</a></p>'
+            ais.objects[0].positionreceived +
+            '</td></tr></table><p><a target="_blank" href="https:' +
+            ais.objects[0].publicurl +
+            '">More Information from FleetMon >>></a></p>'
           ;
           while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
               coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
@@ -198,7 +197,7 @@
 </script>
 {% endif %}
 
-{% if ship.status|stringformat:'s' != 'Active' %}
+{% if ship.active is False %}
 <script>
   mapboxgl.accessToken = 'pk.eyJ1IjoiZG91Z25ld21hbiIsImEiOiJjam5vODkwaHQwNm1qM3BxbHV6YmlidWFoIn0.3rN2nNWL5-Ie_euOFrChbg';
   var map = new mapboxgl.Map({

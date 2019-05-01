@@ -26,5 +26,5 @@ class OwnerAdmin(admin.ModelAdmin):
 admin.site.register(Owner, OwnerAdmin)
 
 class ShipAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('name', 'year_built')}
+    prepopulated_fields = {'slug': ('name',)}
 admin.site.register(Ship, ShipAdmin)

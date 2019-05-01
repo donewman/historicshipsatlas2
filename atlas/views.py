@@ -8,12 +8,10 @@ from atlas.forms import SearchForm
 
 # Index view
 def index(request):
-    # Serializes static ships, i.e. ships without FleetMon IDs, to JSON
-    static_ships_json = serializers.serialize('json', Ship.objects.all().filter(fleetmon__isnull=True), fields=('name', 'type', 'year_built', 'city', 'country', 'status', 'lat', 'lon', 'slug'), use_natural_foreign_keys=True)
-    # Serializes active ships, i.e. ships with FleetMon IDs, to JSON
-    active_ships_json = serializers.serialize('json', Ship.objects.all().filter(fleetmon__isnull=False), fields=('name', 'fleetmon', 'type', 'year_built', 'slug'), use_natural_foreign_keys=True)
-    # Passes both JSON objects as context
-    context = {'static_ships_json': static_ships_json, 'active_ships_json': active_ships_json,}
+    # Serializes static ships to JSON
+    static_ships_json = serializers.serialize('json', Ship.objects.all().filter(active=False), fields=('name', 'type', 'year_built', 'city', 'country', 'status', 'lat', 'lon', 'slug'), use_natural_foreign_keys=True)
+    # Passes static ships as context
+    context = {'static_ships_json': static_ships_json,}
 
     return render(request, 'index.html', context,)
 
@@ -34,9 +32,9 @@ class SearchResultsView(ListView):
             qs = qs.annotate(
                 search=(
                         SearchVector('name', 'type__name', 'city__name', 'city__region', 'country__name', 'status__name', 'uses__name', 'owner__name', 'former_names', 'description')
-                    ),).filter(search=self.request.GET['keywords']).distinct('pk')
+                    ),).filter(search=self.request.GET['keywords']).distinct('slug')
         if self.request.GET.get('name'):
-            qs = qs.annotate(search=(SearchVector('name')),).filter(search=self.request.GET['name']).distinct('pk')
+            qs = qs.annotate(search=(SearchVector('name')),).filter(search=self.request.GET['name']).distinct('slug')
         if self.request.GET.get('imo'):
             qs = qs.filter(imo__exact=self.request.GET['imo'])
         if self.request.GET.get('type'):
@@ -58,7 +56,7 @@ class SearchResultsView(ListView):
         if self.request.GET.get('beam_to'):
             qs = qs.filter(beam__lte=self.request.GET['beam_to'])
         if self.request.GET.get('city'):
-            qs = qs.annotate(search=(SearchVector('city__name', 'city__region')),).filter(search=self.request.GET['city']).distinct('pk')
+            qs = qs.annotate(search=(SearchVector('city__name', 'city__region')),).filter(search=self.request.GET['city']).distinct('slug')
         if self.request.GET.get('country'):
             qs = qs.filter(country=self.request.GET['country'])
         if self.request.GET.get('status'):
@@ -66,10 +64,10 @@ class SearchResultsView(ListView):
         if self.request.GET.get('uses'):
             qs = qs.filter(uses=self.request.GET['uses'])
         if self.request.GET.get('owner'):
-            qs = qs.annotate(search=(SearchVector('owner__name')),).filter(search=self.request.GET['owner']).distinct('pk')
+            qs = qs.annotate(search=(SearchVector('owner__name')),).filter(search=self.request.GET['owner']).distinct('slug')
         if self.request.GET.get('former_names'):
-            qs = qs.annotate(search=(SearchVector('former_names')),).filter(search=self.request.GET['former_names']).distinct('pk')
-        return qs.order_by('name')
+            qs = qs.annotate(search=(SearchVector('former_names')),).filter(search=self.request.GET['former_names']).distinct('slug')
+        return qs.order_by('slug')
 
 # Details view for ships
 class ShipDetailView(DetailView):
