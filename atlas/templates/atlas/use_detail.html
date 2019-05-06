@@ -1,9 +1,11 @@
 {% extends "base_generic.html" %}
 
-{% block content %}
-<h2>Use: {{ use.name }}</h2>
+{% block title %}
+  <title>Ships with Use: {{ use.name }} - Historic Ships Atlas</title>
+{% endblock %}
 
-<h3>Ships</h3>
+{% block content %}
+<h1>Ships with Use: {{ use.name }}</h1>
 
 <ul>
   {% for ship in use.ship_set.all %}

@@ -69,6 +69,13 @@ class SearchResultsView(ListView):
             qs = qs.annotate(search=(SearchVector('former_names')),).filter(search=self.request.GET['former_names']).distinct('slug')
         return qs.order_by('slug')
 
+# View all Ships
+class AllShipsView(ListView):
+    model = Ship
+
+    def get_queryset(self):
+        return Ship.objects.all().order_by('slug')
+
 # Details view for ships
 class ShipDetailView(DetailView):
     model = Ship

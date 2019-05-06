@@ -1,9 +1,19 @@
 {% extends "base_generic.html" %}
 
-{% block content %}
-<h2>City: {{ city.name }}</h2>
+{% block title %}
+  {% if city.region %}
+  <title>Ships in City: {{ city.name }}, {{ city.region }} - Historic Ships Atlas</title>
+  {% else %}
+  <title>Ships in City: {{ city.name }} - Historic Ships Atlas</title>
+  {% endif %}
+{% endblock %}
 
-<h3>Ships</h3>
+{% block content %}
+  {% if city.region %}
+  <h1>Ships in City: {{ city.name }}, {{ city.region }}</h1>
+  {% else %}
+  <h1>Ships in City: {{ city.name }}</h1>
+{% endif %}
 
 <ul>
   {% for ship in city.ship_set.all %}

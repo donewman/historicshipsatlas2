@@ -1,0 +1,15 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+  <title>All Ships - Historic Ships Atlas</title>
+{% endblock %}
+
+{% block content %}
+<h1>All Ships</h1>
+
+<ul>
+ {% for ship in ship_list %}
+   <li><a href="{{ ship.get_absolute_url }}">{{ ship.name }}</a></li>
+ {% endfor %}
+</ul>
+{% endblock %}

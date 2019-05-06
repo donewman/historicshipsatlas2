@@ -1,13 +1,17 @@
 {% extends "base_generic.html" %}
 
+{% block title %}
+  <title>{{ ship.name }} - Historic Ships Atlas</title>
+{% endblock %}
+
 {% block head %}
   <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
-<h2>{{ ship.name }}</h2>
+<h1>{{ ship.name }}</h1>
 
-<h3>Ship Details</h3>
+<h2>Ship Details</h2>
 
 <table>
   {% if ship.imo %}
@@ -93,13 +97,17 @@
 </table>
 
 {% if ship.description %}
-  <h3>Description</h3>
+  <h2>Description</h2>
   {% autoescape off %}
   {{ ship.description }}
   {% endautoescape %}
 {% endif %}
 
-<h3>Map</h3>
+<h2>Map</h2>
+
+{% if ship.active is True and ship.imo %}
+<p>Click on the ship icon on the map for live location data.</p>
+{% endif %}
 
 <div id="map" style="height: 600px;"></div>
 

@@ -1,9 +1,12 @@
 {% extends "base_generic.html" %}
 
-{% block content %}
-<h2>Search</h2>
+{% block title %}
+  <title>Advanced Search - Historic Ships Atlas</title>
+{% endblock %}
 
-<h3>Advanced Search</h3>
+{% block content %}
+<h1>Advanced Search</h1>
+
 <form action="/atlas/search/" method="get" class="grid-x grid-padding-x">
   <div class="cell">
     {{ search_form.keywords.label_tag }}

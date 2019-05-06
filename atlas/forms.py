@@ -3,7 +3,7 @@ from atlas.models import Ship, Type, City, Country, Status, Use, Owner
 
 # Search form
 class SearchForm(forms.Form):
-    keywords = forms.CharField(label='Keyword(s):', max_length=200, required=False, widget=forms.TextInput(attrs={'class': 'input-group-field'}))
+    keywords = forms.CharField(label='Keyword(s):', max_length=200, required=False, widget=forms.TextInput(attrs={'class': 'input-group-field', 'aria-label': 'Keyword Search'}))
     name = forms.CharField(label='Name:', max_length=200, required=False)
     imo = forms.IntegerField(label='IMO Number:', required=False)
     type = forms.ModelMultipleChoiceField(label='Type:', queryset=Type.objects.all().order_by('name'), required=False)

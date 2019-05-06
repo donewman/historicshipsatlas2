@@ -1,9 +1,11 @@
 {% extends "base_generic.html" %}
 
-{% block content %}
-<h2>Status: {{ status.name }}</h2>
+{% block title %}
+  <title>Ships with Status: {{ status.name }} - Historic Ships Atlas</title>
+{% endblock %}
 
-<h3>Ships</h3>
+{% block content %}
+<h1>Ships with Status: {{ status.name }}</h1>
 
 <ul>
   {% for ship in status.ship_set.all %}

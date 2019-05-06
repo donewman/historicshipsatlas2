@@ -1,12 +1,17 @@
 {% extends "base_generic.html" %}
 
+{% block title %}
+  <title>Home - Historic Ships Atlas</title>
+{% endblock %}
+
 {% block head %}
   <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
-  <h2>Home</h2>
+  <h1>Home</h1>
   <p>Welcome to the Historic Ships Atlas!</p>
+  <p>The markers with anchor icons on the map represent the locations of ships with static positions. The markers with ship icons represent the current locations of active ships. Click on the markers to see more about each ship. Or, use the search box in the navigation or the <a href="{% url 'advanced_search' %}">Advanced Search</a> to search for ships, or simply view <a href="{% url 'ships' %}">All Ships</a>.</p>
   <div id="map" style="height: 600px;"></div>
 {% endblock %}
 
