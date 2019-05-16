@@ -24,50 +24,53 @@ class AdvancedSearchView(FormView):
 # Search results
 class SearchResultsView(ListView):
     template_name = 'search_results.html'
+    form_class = SearchForm
     model = Ship
 
     def get_queryset(self):
+        form = self.form_class(self.request.GET)
         qs = Ship.objects.all()
-        if self.request.GET['keywords']:
-            qs = qs.annotate(
-                search=(
-                        SearchVector('name', 'type__name', 'city__name', 'city__region', 'country__name', 'status__name', 'uses__name', 'owner__name', 'former_names', 'description')
-                    ),).filter(search=self.request.GET['keywords']).distinct('slug')
-        if self.request.GET.get('name'):
-            qs = qs.annotate(search=(SearchVector('name')),).filter(search=self.request.GET['name']).distinct('slug')
-        if self.request.GET.get('imo'):
-            qs = qs.filter(imo__exact=self.request.GET['imo'])
-        if self.request.GET.get('type'):
-            qs = qs.filter(type=self.request.GET['type'])
-        if self.request.GET.get('year_built_from'):
-            qs = qs.filter(year_built__gte=self.request.GET['year_built_from'])
-        if self.request.GET.get('year_built_to'):
-            qs = qs.filter(year_built__lte=self.request.GET['year_built_to'])
-        if self.request.GET.get('tonnage_from'):
-            qs = qs.filter(tonnage__gte=self.request.GET['tonnage_from'])
-        if self.request.GET.get('tonnage_to'):
-            qs = qs.filter(tonnage__lte=self.request.GET['tonnage_to'])
-        if self.request.GET.get('length_from'):
-            qs = qs.filter(length__gte=self.request.GET['length_from'])
-        if self.request.GET.get('length_to'):
-            qs = qs.filter(length__lte=self.request.GET['length_to'])
-        if self.request.GET.get('beam_from'):
-            qs = qs.filter(beam__gte=self.request.GET['beam_from'])
-        if self.request.GET.get('beam_to'):
-            qs = qs.filter(beam__lte=self.request.GET['beam_to'])
-        if self.request.GET.get('city'):
-            qs = qs.annotate(search=(SearchVector('city__name', 'city__region')),).filter(search=self.request.GET['city']).distinct('slug')
-        if self.request.GET.get('country'):
-            qs = qs.filter(country=self.request.GET['country'])
-        if self.request.GET.get('status'):
-            qs = qs.filter(status=self.request.GET['status'])
-        if self.request.GET.get('uses'):
-            qs = qs.filter(uses=self.request.GET['uses'])
-        if self.request.GET.get('owner'):
-            qs = qs.annotate(search=(SearchVector('owner__name')),).filter(search=self.request.GET['owner']).distinct('slug')
-        if self.request.GET.get('former_names'):
-            qs = qs.annotate(search=(SearchVector('former_names')),).filter(search=self.request.GET['former_names']).distinct('slug')
-        return qs.order_by('slug')
+        if form.is_valid():
+            if form.cleaned_data['keywords']:
+                qs = qs.annotate(
+                    search=(
+                            SearchVector('name', 'type__name', 'city__name', 'city__region', 'country__name', 'status__name', 'uses__name', 'owner__name', 'former_names', 'description')
+                        ),).filter(search=form.cleaned_data['keywords']).distinct('slug')
+            if form.cleaned_data['name']:
+                qs = qs.annotate(search=(SearchVector('name')),).filter(search=form.cleaned_data['name']).distinct('slug')
+            if form.cleaned_data['imo']:
+                qs = qs.filter(imo__exact=form.cleaned_data['imo'])
+            if form.cleaned_data['type']:
+                qs = qs.filter(type__in=form.cleaned_data['type'])
+            if form.cleaned_data['year_built_from']:
+                qs = qs.filter(year_built__gte=form.cleaned_data['year_built_from'])
+            if form.cleaned_data['year_built_to']:
+                qs = qs.filter(year_built__lte=form.cleaned_data['year_built_to'])
+            if form.cleaned_data['tonnage_from']:
+                qs = qs.filter(tonnage__gte=form.cleaned_data['tonnage_from'])
+            if form.cleaned_data['tonnage_to']:
+                qs = qs.filter(tonnage__lte=form.cleaned_data['tonnage_to'])
+            if form.cleaned_data['length_from']:
+                qs = qs.filter(length__gte=form.cleaned_data['length_from'])
+            if form.cleaned_data['length_to']:
+                qs = qs.filter(length__lte=form.cleaned_data['length_to'])
+            if form.cleaned_data['beam_from']:
+                qs = qs.filter(beam__gte=form.cleaned_data['beam_from'])
+            if form.cleaned_data['beam_to']:
+                qs = qs.filter(beam__lte=form.cleaned_data['beam_to'])
+            if form.cleaned_data['city']:
+                qs = qs.annotate(search=(SearchVector('city__name', 'city__region')),).filter(search=form.cleaned_data['city']).distinct('slug')
+            if form.cleaned_data['country']:
+                qs = qs.filter(country__in=form.cleaned_data['country'])
+            if form.cleaned_data['status']:
+                qs = qs.filter(status__in=form.cleaned_data['status'])
+            if form.cleaned_data['uses']:
+                qs = qs.filter(uses__in=form.cleaned_data['uses'])
+            if form.cleaned_data['owner']:
+                qs = qs.annotate(search=(SearchVector('owner__name')),).filter(search=form.cleaned_data['owner']).distinct('slug')
+            if form.cleaned_data['former_names']:
+                qs = qs.annotate(search=(SearchVector['former_names']),).filter(search=form.cleaned_data['former_names']).distinct('slug')
+            return qs.order_by('slug')
 
 # View all Ships
 class AllShipsView(ListView):
