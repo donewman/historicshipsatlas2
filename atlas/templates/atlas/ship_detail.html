@@ -11,7 +11,17 @@
 {% block content %}
 <h1>{{ ship.name }}</h1>
 
-<h2>Ship Details</h2>
+<nav>
+  <ul>
+    <li><a href="#details_head">Ship Details</a></li>
+    {% if ship.description %}
+      <li><a href="#description_head"></a></li>
+    {% endif %}
+    <li><a href="#map_head">Map</a></li>
+  </ul>
+</nav>
+
+<h2 id="details_head">Ship Details</h2>
 
 <table>
   {% if ship.imo %}
@@ -96,21 +106,27 @@
   {% endif %}
 </table>
 
+<p><a href="#">Return to Top</a></p>
+
 {% if ship.description %}
-  <h2>Description</h2>
+  <h2 id="description_head">Description</h2>
+
   {% autoescape off %}
   {{ ship.description }}
   {% endautoescape %}
+
+  <p><a href="#">Return to Top</a></p>
 {% endif %}
 
-<h2>Map</h2>
+<h2 id="map_head">Map</h2>
 
 {% if ship.active is True and ship.imo %}
-<p>Click on the ship icon on the map for live location data.</p>
+<p>Click or tap on the ship icon on the map for live location data.</p>
 {% endif %}
 
 <div id="map" style="height: 600px;"></div>
 
+<p><a href="#">Return to Top</a></p>
 {% endblock %}
 
 {% block script %}
