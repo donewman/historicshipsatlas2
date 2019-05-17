@@ -8,9 +8,12 @@
 <h1>Advanced Search</h1>
 
 <form action="/atlas/search/" method="get" class="grid-x grid-padding-x">
-  <div class="cell">
+  <div class="cell auto">
     {{ search_form.keywords.label_tag }}
     {{ search_form.keywords }}
+  </div>
+  <div class="input-group-button cell shrink">
+    <input type="submit" class="button" value="Search"">
   </div>
   <div class="cell">
     {{ search_form.name.label_tag }}
@@ -24,46 +27,50 @@
     {{ search_form.type.label_tag }}
     {{ search_form.type }}
   </div>
-  <div class="medium-6 cell">
-    {{ search_form.year_built_from.label_tag }}
-    {{ search_form.year_built_from }}
-  </div>
-  <div class="medium-6 cell">
-    {{ search_form.year_built_to.label_tag }}
-    {{ search_form.year_built_to }}
-  </div>
-  <div class="medium-6 cell">
-    {{ search_form.tonnage_from.label_tag }}
-    {{ search_form.tonnage_from }}
-  </div>
-  <div class="medium-6 cell">
-    {{ search_form.tonnage_to.label_tag }}
-    {{ search_form.tonnage_to }}
-  </div>
-  <div class="medium-6 cell">
-    {{ search_form.length_from.label_tag }}
-    {{ search_form.length_from }}
-  </div>
-  <div class="medium-6 cell">
-    {{ search_form.length_to.label_tag }}
-    {{ search_form.length_to }}
-  </div>
-  <div class="medium-6 cell">
-    {{ search_form.beam_from.label_tag }}
-    {{ search_form.beam_from }}
-  </div>
-  <div class="medium-6 cell">
-    {{ search_form.beam_to.label_tag }}
-    {{ search_form.beam_to }}
-  </div>
-  <div class="cell">
-    {{ search_form.city.label_tag }}
-    {{ search_form.city }}
-  </div>
-  <div class="cell">
-    {{ search_form.country.label_tag }}
-    {{ search_form.country }}
-  </div>
+  <fieldset class="fieldset cell grid-x grid-padding-x">
+    <legend>Year Built</legend>
+    <div class="medium-6 cell">
+      <label for="id_year_built_from">From:</label>
+      {{ search_form.year_built_from }}
+    </div>
+    <div class="medium-6 cell">
+      <label for="id_year_built_to">To:</label>
+      {{ search_form.year_built_to }}
+    </div>
+  </fieldset>
+  <fieldset class="fieldset cell grid-x grid-padding-x">
+    <legend>Gross Tonnage</legend>
+    <div class="medium-6 cell">
+      <label for="id_tonnage_from">From:</label>
+      {{ search_form.tonnage_from }}
+    </div>
+    <div class="medium-6 cell">
+      <label for="id_tonnage_to">To:</label>
+      {{ search_form.tonnage_to }}
+    </div>
+  </fieldset>
+  <fieldset class="fieldset cell grid-x grid-padding-x">
+    <legend>Length (meters)</legend>
+    <div class="medium-6 cell">
+      <label for="id_length_from">From:</label>
+      {{ search_form.length_from }}
+    </div>
+    <div class="medium-6 cell">
+      <label for="id_length_to">To:</label>
+      {{ search_form.length_to }}
+    </div>
+  </fieldset>
+  <fieldset class="fieldset cell grid-x grid-padding-x">
+    <legend>Location (Static Ships Only)</legend>
+    <div class="cell">
+      {{ search_form.country.label_tag }}
+      {{ search_form.country }}
+    </div>
+    <div class="cell">
+      {{ search_form.city.label_tag }}
+      {{ search_form.city }}
+    </div>
+  </fieldset>
   <div class="cell">
     {{ search_form.status.label_tag }}
     {{ search_form.status }}
@@ -79,9 +86,6 @@
   <div class="cell">
     {{ search_form.former_names.label_tag }}
     {{ search_form.former_names }}
-  </div>
-  <div class="cell">
-    <input type="submit" class="button" value="Search">
   </div>
 </form>
 {% endblock %}

@@ -54,10 +54,6 @@ class SearchResultsView(ListView):
                 qs = qs.filter(length__gte=form.cleaned_data['length_from'])
             if form.cleaned_data['length_to']:
                 qs = qs.filter(length__lte=form.cleaned_data['length_to'])
-            if form.cleaned_data['beam_from']:
-                qs = qs.filter(beam__gte=form.cleaned_data['beam_from'])
-            if form.cleaned_data['beam_to']:
-                qs = qs.filter(beam__lte=form.cleaned_data['beam_to'])
             if form.cleaned_data['city']:
                 qs = qs.annotate(search=(SearchVector('city__name', 'city__region')),).filter(search=form.cleaned_data['city']).distinct('slug')
             if form.cleaned_data['country']:
