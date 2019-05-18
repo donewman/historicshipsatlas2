@@ -9,142 +9,82 @@
 {% endblock %}
 
 {% block content %}
+  {% load static %}
   <h1>Home</h1>
-  <p>Markers with anchor icons on the map represent the locations of ships with static positions. Markers with ship icons represent the current locations of active ships. Click or tap on the markers to see more about each ship.</p>
-  <div id="map" style="height: 600px;"></div>
+  <p>Welcome to the Historic Ships Atlas. Explore the map or <a href="{% url 'advanced_search' %}">search</a> to find ships.</p>
+  <div id="map" style="height: 600px;">
+    <div id="atlas-legend" class="legend">
+      <h2 class="h5">Legend</h2>
+      <ul class="no-bullet">
+        <li><img src="{% static 'atlas/img/active-ship.png' %}" alt="icon for active ship" width="15px"> Active Ship</li>
+        <li><img src="{% static 'atlas/img/static-ship.png' %}" alt="icon for static ship" width="15px"> Static Ship</li>
+      </ul>
+    </div>
+  </div>
 {% endblock %}
 
 {% block script %}
-<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js"></script>
-<script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
-<script type="text/javascript">
-  var static_ships_features = [];
-  for (var i = 0; i < {{ static_ships_json|safe }}.length; i++) {
-    static_ships_features.push({
-      'type': 'Feature',
-      'geometry': {
-          'type': 'Point',
-          'coordinates': [{{ static_ships_json|safe }}[i].fields.lon, {{ static_ships_json|safe }}[i].fields.lat]
-      },
-      'properties': {
-          'description': '<h3>' +
-            {{ static_ships_json|safe }}[i].fields.name +
-            '</h3><table><tr><td>' +
-            {{ static_ships_json|safe}}[i].fields.type +
-            '</td></tr><tr><td>' +
-            {{ static_ships_json|safe }}[i].fields.status +
-            '</td></tr><tr><td>' +
-            {{ static_ships_json|safe }}[i].fields.city +
-            ', ' +
-            {{ static_ships_json|safe }}[i].fields.country +
-            '</td></tr></table><p><a href="/atlas/ship/' +
-            {{ static_ships_json|safe }}[i].fields.slug +
-            '">Ship Details >>></a></p>',
-          'icon': 'harbor'
-      }
-    },
-  );}
-  mapboxgl.accessToken = 'pk.eyJ1IjoiZG91Z25ld21hbiIsImEiOiJjam5vODkwaHQwNm1qM3BxbHV6YmlidWFoIn0.3rN2nNWL5-Ie_euOFrChbg';
-  var map = new mapboxgl.Map({
-      container: 'map',
-      center: [0, 0],
-      zoom: 1,
-      style: 'mapbox://styles/mapbox/satellite-streets-v10'
-  });
-  map.on('load', function () {
-    var nav = new mapboxgl.NavigationControl();
-    map.addControl(nav, 'top-left');
-    map.addLayer({
-        'id': 'static_ships',
-        'type': 'symbol',
-        'source': {
-            'type': 'geojson',
-            'data': {
-                'type': 'FeatureCollection',
-                'features': static_ships_features,
-            }
-        },
-        'layout': {
-            'icon-image': '{icon}-15',
-            'icon-allow-overlap': true,
-        },
-    });
-    map.on('click', 'static_ships', function (e) {
-        var coordinates = e.features[0].geometry.coordinates.slice();
-        var description = e.features[0].properties.description;
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
-        new mapboxgl.Popup()
-            .setLngLat(coordinates)
-            .setHTML(description)
-            .addTo(map);
-    });
-    map.on('mouseenter', 'static_ships', function () {
-        map.getCanvas().style.cursor = 'pointer';
-    });
-    map.on('mouseleave', 'static_ships', function () {
-        map.getCanvas().style.cursor = '';
-    });
-  });
-  fetch('https://www.fleetmon.com/api/p/personal-v1/myfleet/?username=dougnewman&api_key=4320bb316a86f03cccb627ce0f031905664d902c&format=json', {
-    headers: {
-      'Accept': 'application/json'
-    },
-  })
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(myJson) {
-    var ais = myJson;
-    console.log(ais);
-    var active_ships_features = [];
-    for (var i = 0; i < ais.objects.length; i++) {
-      slug = ais.objects[i].vessel.name.replace(/\s+/g, '-').toLowerCase();
-      active_ships_features.push({
+  {% load static %}
+  <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js"></script>
+  <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+  <script type="text/javascript">
+    var static_ships_features = [];
+    for (var i = 0; i < {{ static_ships_json|safe }}.length; i++) {
+      static_ships_features.push({
         'type': 'Feature',
         'geometry': {
             'type': 'Point',
-            'coordinates': [ais.objects[i].vessel.longitude, ais.objects[i].vessel.latitude]
+            'coordinates': [{{ static_ships_json|safe }}[i].fields.lon, {{ static_ships_json|safe }}[i].fields.lat]
         },
         'properties': {
             'description': '<h3>' +
-              ais.objects[i].vessel.name +
-              '</h3></p><table><tr><th scope="row">Current Location:</th><td>' +
-              ais.objects[i].vessel.location +
-              '</td></tr><tr><th scope="row">Navigational Status:</th><td>' +
-              ais.objects[i].vessel.navigationstatus +
-              '</td></tr><tr><th scope="row">Speed:</th><td>' +
-              ais.objects[i].vessel.speed +
-              ' kn</td></tr><tr><th scope="row">Last Updated:</th><td>' +
-              ais.objects[i].vessel.positionreceived +
+              {{ static_ships_json|safe }}[i].fields.name +
+              '</h3><table><tr><td>' +
+              {{ static_ships_json|safe}}[i].fields.type +
+              '</td></tr><tr><td>' +
+              {{ static_ships_json|safe }}[i].fields.status +
+              '</td></tr><tr><td>' +
+              {{ static_ships_json|safe }}[i].fields.city +
+              ', ' +
+              {{ static_ships_json|safe }}[i].fields.country +
               '</td></tr></table><p><a href="/atlas/ship/' +
-              slug +
-              '">Ship Details >>></a></p><p><a target="_blank"  href="https:' +
-              ais.objects[i].vessel.publicurl +
-              '">More Information from FleetMon >>></a></p>',
-            'icon': 'ferry'
+              {{ static_ships_json|safe }}[i].fields.slug +
+              '">Ship Details >>></a></p>',
+            'icon': 'harbor'
         }
       },
     );}
-    console.log(active_ships_features);
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZG91Z25ld21hbiIsImEiOiJjam5vODkwaHQwNm1qM3BxbHV6YmlidWFoIn0.3rN2nNWL5-Ie_euOFrChbg';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        center: [0, 0],
+        zoom: 1,
+        style: 'mapbox://styles/mapbox/satellite-streets-v10'
+    });
     map.on('load', function () {
-      map.addLayer({
-          'id': 'active_ships',
-          'type': 'symbol',
-          'source': {
-              'type': 'geojson',
-              'data': {
-                  'type': 'FeatureCollection',
-                  'features': active_ships_features
-              }
-          },
-          'layout': {
-              'icon-image': '{icon}-15',
-              'icon-allow-overlap': true,
-          },
+      map.loadImage('{% static "atlas/img/static-ship.png" %}', function(error, image) {
+        if (error) throw error;
+        map.addImage('static-ship', image);
+        var nav = new mapboxgl.NavigationControl();
+        map.addControl(nav, 'top-left');
+        map.addLayer({
+            'id': 'static_ships',
+            'type': 'symbol',
+            'source': {
+                'type': 'geojson',
+                'data': {
+                    'type': 'FeatureCollection',
+                    'features': static_ships_features,
+                }
+            },
+            'layout': {
+                'icon-image': 'static-ship',
+                'icon-size': 0.25,
+                'icon-allow-overlap': true,
+            },
+        });
       });
-      map.on('click', 'active_ships', function (e) {
+      map.on('click', 'static_ships', function (e) {
           var coordinates = e.features[0].geometry.coordinates.slice();
           var description = e.features[0].properties.description;
           while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
@@ -155,13 +95,93 @@
               .setHTML(description)
               .addTo(map);
       });
-      map.on('mouseenter', 'active_ships', function () {
+      map.on('mouseenter', 'static_ships', function () {
           map.getCanvas().style.cursor = 'pointer';
       });
-      map.on('mouseleave', 'active_ships', function () {
+      map.on('mouseleave', 'static_ships', function () {
           map.getCanvas().style.cursor = '';
       });
     });
-  });
-</script>
+    fetch('https://www.fleetmon.com/api/p/personal-v1/myfleet/?username=dougnewman&api_key=4320bb316a86f03cccb627ce0f031905664d902c&format=json', {
+      headers: {
+        'Accept': 'application/json'
+      },
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+      var ais = myJson;
+      console.log(ais);
+      var active_ships_features = [];
+      for (var i = 0; i < ais.objects.length; i++) {
+        slug = ais.objects[i].vessel.name.replace(/\s+/g, '-').toLowerCase();
+        active_ships_features.push({
+          'type': 'Feature',
+          'geometry': {
+              'type': 'Point',
+              'coordinates': [ais.objects[i].vessel.longitude, ais.objects[i].vessel.latitude]
+          },
+          'properties': {
+              'description': '<h3>' +
+                ais.objects[i].vessel.name +
+                '</h3></p><table><tr><th scope="row">Current Location:</th><td>' +
+                ais.objects[i].vessel.location +
+                '</td></tr><tr><th scope="row">Navigational Status:</th><td>' +
+                ais.objects[i].vessel.navigationstatus +
+                '</td></tr><tr><th scope="row">Speed:</th><td>' +
+                ais.objects[i].vessel.speed +
+                ' kn</td></tr><tr><th scope="row">Last Updated:</th><td>' +
+                ais.objects[i].vessel.positionreceived +
+                '</td></tr></table><p><a href="/atlas/ship/' +
+                slug +
+                '">Ship Details >>></a></p><p><a target="_blank"  href="https:' +
+                ais.objects[i].vessel.publicurl +
+                '">More Information from FleetMon >>></a></p>',
+              'icon': 'active-ship'
+          }
+        },
+      );}
+      console.log(active_ships_features);
+      map.on('load', function () {
+        map.loadImage('{% static "atlas/img/active-ship.png" %}', function(error, image) {
+          if (error) throw error;
+          map.addImage('active-ship', image);
+          map.addLayer({
+              'id': 'active_ships',
+              'type': 'symbol',
+              'source': {
+                  'type': 'geojson',
+                  'data': {
+                      'type': 'FeatureCollection',
+                      'features': active_ships_features
+                  }
+              },
+              'layout': {
+                  'icon-image': 'active-ship',
+                  'icon-size': 0.25,
+                  'icon-allow-overlap': true,
+              },
+          });
+        });
+        map.on('click', 'active_ships', function (e) {
+            var coordinates = e.features[0].geometry.coordinates.slice();
+            var description = e.features[0].properties.description;
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+            new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(description)
+                .addTo(map);
+        });
+        map.on('mouseenter', 'active_ships', function () {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+        map.on('mouseleave', 'active_ships', function () {
+            map.getCanvas().style.cursor = '';
+        });
+      });
+    });
+  </script>
 {% endblock %}

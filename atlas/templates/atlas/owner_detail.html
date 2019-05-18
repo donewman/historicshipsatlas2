@@ -5,41 +5,40 @@
 {% endblock %}
 
 {% block content %}
-<h1>Ships with Owner: {{ owner.name }}</h1>
+  <h1>Ships with Owner: {{ owner.name }}</h1>
 
-<table>
-  <tr>
-    <th scope="col">Name</th>
-    <th scope="col">Type</th>
-    <th scope="col">Year Built</th>
-    <th scope="col">Gross Tonnage</th>
-    <th scope="col">Current Status</th>
-  </tr>
-  {% for ship in owner.ship_set.all|dictsort:'slug' %}
+  <table>
     <tr>
-      <td><a href="{{ ship.get_absolute_url }}">{{ ship.name }}</a></td>
-      {% if ship.type %}
-        <td>{{ ship.type }}</td>
-      {% else %}
-        <td>N/A</td>
-      {% endif %}
-      {% if ship.year_built %}
-        <td>{{ ship.year_built }}</td>
-      {% else %}
-        <td>N/A</td>
-      {% endif %}
-      {% if ship.tonnage %}
-        <td>{{ ship.tonnage }}</td>
-      {% else %}
-        <td>N/A</td>
-      {% endif %}
-      {% if ship.status %}
-        <td>{{ ship.status }}</td>
-      {% else %}
-        <td>N/A</td>
-      {% endif %}
+      <th scope="col">Name</th>
+      <th scope="col">Type</th>
+      <th scope="col">Year Built</th>
+      <th scope="col">Gross Tonnage</th>
+      <th scope="col">Current Status</th>
     </tr>
-  {% endfor %}
-</table>
-
+    {% for ship in owner.ship_set.all|dictsort:'slug' %}
+      <tr>
+        <td><a href="{{ ship.get_absolute_url }}">{{ ship.name }}</a></td>
+        {% if ship.type %}
+          <td>{{ ship.type }}</td>
+        {% else %}
+          <td>N/A</td>
+        {% endif %}
+        {% if ship.year_built %}
+          <td>{{ ship.year_built }}</td>
+        {% else %}
+          <td>N/A</td>
+        {% endif %}
+        {% if ship.tonnage %}
+          <td>{{ ship.tonnage }}</td>
+        {% else %}
+          <td>N/A</td>
+        {% endif %}
+        {% if ship.status %}
+          <td>{{ ship.status }}</td>
+        {% else %}
+          <td>N/A</td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+  </table>
 {% endblock %}

@@ -9,185 +9,185 @@
 {% endblock %}
 
 {% block content %}
-<h1>{{ ship.name }}</h1>
+  <h1>{{ ship.name }}</h1>
 
-<nav>
-  <ul>
-    <li><a href="#details_head">Ship Details</a></li>
-    {% if ship.description %}
-      <li><a href="#description_head"></a></li>
+  <nav>
+    <ul>
+      <li><a href="#details_head">Ship Details</a></li>
+      {% if ship.description %}
+        <li><a href="#description_head"></a></li>
+      {% endif %}
+      <li><a href="#map_head">Map</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="details_head">Ship Details</h2>
+
+  <table>
+    {% if ship.imo %}
+      <tr>
+        <th scope="row">IMO Number</th>
+        <td>{{ ship.imo }}</td>
+      </tr>
     {% endif %}
-    <li><a href="#map_head">Map</a></li>
-  </ul>
-</nav>
-
-<h2 id="details_head">Ship Details</h2>
-
-<table>
-  {% if ship.imo %}
+    {% if ship.type %}
+      <tr>
+        <th scope="row">Type</th>
+        <td><a href="{{ ship.type.get_absolute_url }}">{{ ship.type }}</a></td>
+      </tr>
+    {% endif %}
     <tr>
-      <th scope="row">IMO Number</th>
-      <td>{{ ship.imo }}</td>
+      <th scope="row">Year Built</th>
+      <td>{{ ship.year_built }}</td>
     </tr>
-  {% endif %}
-  {% if ship.type %}
+    {% if ship.tonnage %}
+      <tr>
+        <th scope="row">Gross Tonnage</th>
+        <td>{{ ship.tonnage }}</td>
+      </tr>
+    {% endif %}
+    {% if ship.length %}
+      <tr>
+        <th scope="row">Length (m)</th>
+        <td>{{ ship.length }}</td>
+      </tr>
+    {% endif %}
+    {% if ship.beam %}
+      <tr>
+        <th scope="row">Beam (m)</th>
+        <td>{{ ship.beam }}</td>
+      </tr>
+    {% endif %}
+    {% if ship.city and ship.country %}
+      <tr>
+        <th scope="row">Location</th>
+        <td><a href="{{ ship.city.get_absolute_url }}">{{ ship.city }}</a>, <a href="{{ ship.country.get_absolute_url }}">{{ ship.country }}</a></td>
+      </tr>
+    {% endif %}
     <tr>
-      <th scope="row">Type</th>
-      <td><a href="{{ ship.type.get_absolute_url }}">{{ ship.type }}</a></td>
+      <th scope="row">Current Status</th>
+      <td><a href="{{ ship.status.get_absolute_url }}">{{ ship.status }}</a></td>
     </tr>
-  {% endif %}
-  <tr>
-    <th scope="row">Year Built</th>
-    <td>{{ ship.year_built }}</td>
-  </tr>
-  {% if ship.tonnage %}
-    <tr>
-      <th scope="row">Gross Tonnage</th>
-      <td>{{ ship.tonnage }}</td>
-    </tr>
-  {% endif %}
-  {% if ship.length %}
-    <tr>
-      <th scope="row">Length (m)</th>
-      <td>{{ ship.length }}</td>
-    </tr>
-  {% endif %}
-  {% if ship.beam %}
-    <tr>
-      <th scope="row">Beam (m)</th>
-      <td>{{ ship.beam }}</td>
-    </tr>
-  {% endif %}
-  {% if ship.city and ship.country %}
-    <tr>
-      <th scope="row">Location</th>
-      <td><a href="{{ ship.city.get_absolute_url }}">{{ ship.city }}</a>, <a href="{{ ship.country.get_absolute_url }}">{{ ship.country }}</a></td>
-    </tr>
-  {% endif %}
-  <tr>
-    <th scope="row">Current Status</th>
-    <td><a href="{{ ship.status.get_absolute_url }}">{{ ship.status }}</a></td>
-  </tr>
-  {% if ship.uses.all %}
-    <tr>
-      <th scope="row">Current Use(s)</th>
-      <td>
-        <ul>
-          {% for use in ship.uses.all %}
-            <li><a href="{{ use.get_absolute_url }}">{{ use }}</a></li>
-          {% endfor %}
-        </ul>
-      </td>
-    </tr>
-  {% endif %}
-  {% if ship.owner %}
-    <tr>
-      <th scope="row">Owner</th>
-      <td><a href="{{ ship.owner.get_absolute_url }}">{{ ship.owner }}</a></td>
-    </tr>
-  {% endif %}
-  {% if ship.website %}
-    <tr>
-      <th scope="row">Website</th>
-      <td><a href="{{ ship.website }}" target="_blank">{{ ship.website }}</a></td>
-    </tr>
-  {% endif %}
-  {% if ship.former_names %}
-    <tr>
-      <th scope="row">Former Names</th>
-      <td>
-        <ul>
-          {% autoescape off %}
-          {{ ship.former_names }}
-          {% endautoescape %}
-        </ul>
-      </td>
-    </tr>
-  {% endif %}
-</table>
-
-<p><a href="#">Return to Top</a></p>
-
-{% if ship.description %}
-  <h2 id="description_head">Description</h2>
-
-  {% autoescape off %}
-  {{ ship.description }}
-  {% endautoescape %}
+    {% if ship.uses.all %}
+      <tr>
+        <th scope="row">Current Use(s)</th>
+        <td>
+          <ul>
+            {% for use in ship.uses.all %}
+              <li><a href="{{ use.get_absolute_url }}">{{ use }}</a></li>
+            {% endfor %}
+          </ul>
+        </td>
+      </tr>
+    {% endif %}
+    {% if ship.owner %}
+      <tr>
+        <th scope="row">Owner</th>
+        <td><a href="{{ ship.owner.get_absolute_url }}">{{ ship.owner }}</a></td>
+      </tr>
+    {% endif %}
+    {% if ship.website %}
+      <tr>
+        <th scope="row">Website</th>
+        <td><a href="{{ ship.website }}" target="_blank">{{ ship.website }}</a></td>
+      </tr>
+    {% endif %}
+    {% if ship.former_names %}
+      <tr>
+        <th scope="row">Former Names</th>
+        <td>
+          <ul>
+            {% autoescape off %}
+            {{ ship.former_names }}
+            {% endautoescape %}
+          </ul>
+        </td>
+      </tr>
+    {% endif %}
+  </table>
 
   <p><a href="#">Return to Top</a></p>
-{% endif %}
 
-<h2 id="map_head">Map</h2>
+  {% if ship.description %}
+    <h2 id="description_head">Description</h2>
 
-{% if ship.active is True and ship.imo %}
-<p>Click or tap on the ship icon on the map for live location data.</p>
-{% endif %}
+    {% autoescape off %}
+    {{ ship.description }}
+    {% endautoescape %}
 
-<div id="map" style="height: 600px;"></div>
+    <p><a href="#">Return to Top</a></p>
+  {% endif %}
 
-<p><a href="#">Return to Top</a></p>
+  <h2 id="map_head">Map</h2>
+
+  <div id="map" style="height: 600px;"></div>
+
+  <p><a href="#">Return to Top</a></p>
 {% endblock %}
 
 {% block script %}
-<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js"></script>
-{% if ship.active is True and ship.imo %}
-<script type="text/javascript">
-  fetch(' https://www.fleetmon.com/api/p/personal-v1/vessels_terrestrial/?username=dougnewman&api_key=4320bb316a86f03cccb627ce0f031905664d902c&imonumber={{ ship.imo }}&format=json', {
-    headers: {
-      'Accept': 'application/json'
-    },
-  })
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(myJson) {
-    var ais = myJson;
-    mapboxgl.accessToken = 'pk.eyJ1IjoiZG91Z25ld21hbiIsImEiOiJjam5vODkwaHQwNm1qM3BxbHV6YmlidWFoIn0.3rN2nNWL5-Ie_euOFrChbg';
-    var map = new mapboxgl.Map({
-        container: 'map',
-        center: [ais.objects[0].longitude, ais.objects[0].latitude],
-        zoom: 6,
-        style: 'mapbox://styles/mapbox/satellite-streets-v10'
-    });
-    map.on('load', function () {
-      var nav = new mapboxgl.NavigationControl();
-      map.addControl(nav, 'top-left');
-      map.addLayer({
-          'id': 'points',
-          'type': 'symbol',
-          'source': {
-              'type': 'geojson',
-              'data': {
-                  'type': 'FeatureCollection',
-                  'features': [{
-                      'type': 'Feature',
-                      'geometry': {
-                          'type': 'Point',
-                          'coordinates': [ais.objects[0].longitude, ais.objects[0].latitude]
-                      },
-                      'properties': {
-                          'title': ais.objects[0].name,
-                          'icon': 'ferry'
-                      }
-                  }]
-              }
-          },
-          'layout': {
-              'icon-image': '{icon}-15',
-              'text-field': '{title}',
-              'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-              'text-offset': [0, 0.6],
-              'text-anchor': 'top'
-          },
-          'paint': {
-              'text-color': '#ffffff',
-              'text-halo-color': '#000000',
-              'text-halo-width': 1,
-          }
+  {% load static %}
+  <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js"></script>
+  {% if ship.active is True and ship.imo %}
+  <script type="text/javascript">
+    fetch(' https://www.fleetmon.com/api/p/personal-v1/vessels_terrestrial/?username=dougnewman&api_key=4320bb316a86f03cccb627ce0f031905664d902c&imonumber={{ ship.imo }}&format=json', {
+      headers: {
+        'Accept': 'application/json'
+      },
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+      var ais = myJson;
+      mapboxgl.accessToken = 'pk.eyJ1IjoiZG91Z25ld21hbiIsImEiOiJjam5vODkwaHQwNm1qM3BxbHV6YmlidWFoIn0.3rN2nNWL5-Ie_euOFrChbg';
+      var map = new mapboxgl.Map({
+          container: 'map',
+          center: [ais.objects[0].longitude, ais.objects[0].latitude],
+          zoom: 6,
+          style: 'mapbox://styles/mapbox/satellite-streets-v10'
       });
-      map.on('click', 'points', function (e) {
-          var coordinates = e.features[0].geometry.coordinates.slice();
+      map.on('load', function () {
+        map.loadImage('{% static "atlas/img/active-ship.png" %}', function(error, image) {
+          if (error) throw error;
+          map.addImage('active-ship', image);
+          var nav = new mapboxgl.NavigationControl();
+          map.addControl(nav, 'top-left');
+          map.addLayer({
+              'id': 'points',
+              'type': 'symbol',
+              'source': {
+                  'type': 'geojson',
+                  'data': {
+                      'type': 'FeatureCollection',
+                      'features': [{
+                          'type': 'Feature',
+                          'geometry': {
+                              'type': 'Point',
+                              'coordinates': [ais.objects[0].longitude, ais.objects[0].latitude]
+                          },
+                          'properties': {
+                              'title': ais.objects[0].name,
+                              'icon': 'active-ship'
+                          }
+                      }]
+                  }
+              },
+              'layout': {
+                  'icon-image': 'active-ship',
+                  'icon-size': 0.33,
+                  'text-field': '{title}',
+                  'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                  'text-offset': [0, 0.6],
+                  'text-anchor': 'top'
+              },
+              'paint': {
+                  'text-color': '#ffffff',
+                  'text-halo-color': '#000000',
+                  'text-halo-width': 1,
+              }
+          });
+          var coordinates = [ais.objects[0].longitude, ais.objects[0].latitude];
           var description = '<h3>' +
             ais.objects[0].name +
             '</h3><table><th scope="row">Current Location:</th><td>' +
@@ -202,71 +202,79 @@
             ais.objects[0].publicurl +
             '">More Information from FleetMon >>></a></p>'
           ;
-          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-              coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+          function addPopup() {
+            new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(description)
+                .addTo(map);
           }
-          new mapboxgl.Popup()
-              .setLngLat(coordinates)
-              .setHTML(description)
-              .addTo(map);
-      });
-      map.on('mouseenter', 'points', function () {
-          map.getCanvas().style.cursor = 'pointer';
-      });
-      map.on('mouseleave', 'points', function () {
-          map.getCanvas().style.cursor = '';
+          addPopup();
+          map.on('click', 'points', function (e) {
+            addPopup();
+          });
+          map.on('mouseenter', 'points', function () {
+              map.getCanvas().style.cursor = 'pointer';
+          });
+          map.on('mouseleave', 'points', function () {
+              map.getCanvas().style.cursor = '';
+          });
+        });
       });
     });
-  });
-</script>
-{% endif %}
+  </script>
+  {% endif %}
 
-{% if ship.active is False %}
-<script>
-  mapboxgl.accessToken = 'pk.eyJ1IjoiZG91Z25ld21hbiIsImEiOiJjam5vODkwaHQwNm1qM3BxbHV6YmlidWFoIn0.3rN2nNWL5-Ie_euOFrChbg';
-  var map = new mapboxgl.Map({
-      container: 'map',
-      center: [{{ ship.lon }}, {{ ship.lat }}],
-      zoom: 6,
-      style: 'mapbox://styles/mapbox/satellite-streets-v10'
-  });
-  map.on('load', function () {
-    var nav = new mapboxgl.NavigationControl();
-    map.addControl(nav, 'top-left');
-    map.addLayer({
-        'id': 'points',
-        'type': 'symbol',
-        'source': {
-            'type': 'geojson',
-            'data': {
-                'type': 'FeatureCollection',
-                'features': [{
-                    'type': 'Feature',
-                    'geometry': {
-                        'type': 'Point',
-                        'coordinates': [{{ ship.lon }}, {{ ship.lat }}]
-                    },
-                    'properties': {
-                        'title': '{{ ship.name }}',
-                        'icon': 'harbor'
-                    }
-                }]
-            }
-        },
-        'layout': {
-            'icon-image': '{icon}-15',
-            'text-field': '{title}',
-            'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-            'text-offset': [0, 0.6],
-            'text-anchor': 'top'
-        },
-        'paint': {
-            'text-color': '#ffffff',
-            'text-halo-color': '#000000',
-            'text-halo-width': 1,
-        }
+  {% if ship.active is False %}
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZG91Z25ld21hbiIsImEiOiJjam5vODkwaHQwNm1qM3BxbHV6YmlidWFoIn0.3rN2nNWL5-Ie_euOFrChbg';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        center: [{{ ship.lon }}, {{ ship.lat }}],
+        zoom: 6,
+        style: 'mapbox://styles/mapbox/satellite-streets-v10'
     });
-  });
-</script>
-{% endif %}
+    map.on('load', function () {
+      map.loadImage('{% static "atlas/img/static-ship.png" %}', function(error, image) {
+        if (error) throw error;
+        map.addImage('static-ship', image);
+        var nav = new mapboxgl.NavigationControl();
+        map.addControl(nav, 'top-left');
+        map.addLayer({
+            'id': 'points',
+            'type': 'symbol',
+            'source': {
+                'type': 'geojson',
+                'data': {
+                    'type': 'FeatureCollection',
+                    'features': [{
+                        'type': 'Feature',
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [{{ ship.lon }}, {{ ship.lat }}]
+                        },
+                        'properties': {
+                            'title': '{{ ship.name }}',
+                            'icon': 'static-ship'
+                        }
+                    }]
+                }
+            },
+            'layout': {
+                'icon-image': 'static-ship',
+                'icon-size': 0.33,
+                'text-field': '{title}',
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-offset': [0, 0.6],
+                'text-anchor': 'top'
+            },
+            'paint': {
+                'text-color': '#ffffff',
+                'text-halo-color': '#000000',
+                'text-halo-width': 1,
+            }
+        });
+      });
+    });
+  </script>
+  {% endif %}
 {% endblock %}

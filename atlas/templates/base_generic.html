@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   {% block title %}<!-- template-specific title -->{% endblock %}
   {% load static %}
+  {% block head %}<!-- template-specific static files -->{% endblock %}
   <link rel="stylesheet" href="https://use.typekit.net/fpb1xce.css">
   <link rel="stylesheet" href="{% static 'atlas/css/app.css' %}" />
-  {% block head %}<!-- template-specific static files -->{% endblock %}
 </head>
 <body>
   <div class="off-canvas position-left" id="nav-offcanvas" data-off-canvas>
